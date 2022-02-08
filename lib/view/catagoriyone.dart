@@ -59,16 +59,16 @@ class CategoriOne extends StatelessWidget {
                       builder: (controller) {
                         return CountButtonView(
                           increment: () {
-                            controller.updateCount(1, (count) {}, index);
+                            controller.updateCount(1, (count) {}, index,currentIndex);
                           
                           },
                           currentIndex: index,
-                          count: controller.count.toString(),
+                          count:  "${ dataModel.tableMenuList![currentIndex].categoryDishes![index].cartcount }",
                           decrement: () {
-                            controller.updateCount(-1, (count) {}, index);
+                            controller.updateCount(-1, (count) {}, index,currentIndex);
                             
                           },
-                          initialCount: 5,
+                          initialCount: 0,
                           // onChange: (count) {},
                         );
                       })

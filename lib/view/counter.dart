@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechinetestforinfonix/controller/countercontroller.dart';
 
-typedef void CountButtonClickCallBack(int count);
+typedef void CountButtonClickCallBack(int );
 
 class CountButtonView extends StatelessWidget {
   final controller = Get.put(CounterController());
@@ -56,7 +56,6 @@ class CountButtonView extends StatelessWidget {
                     child: Text(
                   count,
                   style: const TextStyle(
-                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       decoration: TextDecoration.none),

@@ -1,14 +1,18 @@
 import 'package:get/get.dart';
+import 'package:mechinetestforinfonix/model/datamodel.dart';
 
 class CounterController extends GetxController {
-  
-  int count=0 ;
-  void updateCount(int addValue, Function(int) onChange,int currentIndex) {
-    if (count + addValue >= 0) {
-      count += addValue;
-     //update(["update"]);
+  DataModel dataModel = DataModel();
+
+  void updateCount(int addValue, Function(int) onChange, int currentIndex,int catagoriy) {
+    if (dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount==null) {
+      dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount =  dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount! +0;
+    }
+    if (dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount!+ addValue >= 0) {
+      dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount =  dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount! +addValue;
+      //update(["update"]);
       if (onChange != null) {
-       onChange(count);
+        onChange(dataModel.tableMenuList![catagoriy].categoryDishes![currentIndex].cartcount!);
       }
     }
   }
