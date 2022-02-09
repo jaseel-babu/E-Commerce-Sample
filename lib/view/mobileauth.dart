@@ -20,13 +20,13 @@ class MobileAuth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     verificationCompleted = (PhoneAuthCredential phoneAuthCredential) async {
-      await _auth.signInWithCredential(phoneAuthCredential); 
+      await _auth.signInWithCredential(phoneAuthCredential);
     };
 
     codeSent = (String? verificationId, [int? forceResendingToken]) async {
       print("check your phone");
       controller.verificationId = verificationId!;
-       Get.off(() => Verification());
+      Get.off(() => Verification());
       print(controller.verificationId);
     };
 
@@ -53,6 +53,7 @@ class MobileAuth extends StatelessWidget {
                   width: maxWidth,
                   height: maxHeight,
                   child: ListView(
+                    shrinkWrap: true,
                     children: [
                       loginimg(maxHeight / 2),
                       field(context, maxWidth),
@@ -75,10 +76,9 @@ class MobileAuth extends StatelessWidget {
     );
   }
 
- ListView field(BuildContext context, double maxWidth) {
+  ListView field(BuildContext context, double maxWidth) {
     return ListView(
       shrinkWrap: true,
-     
       children: [
         Padding(
           padding: const EdgeInsets.all(10.0),
@@ -104,10 +104,10 @@ class MobileAuth extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration:const InputDecoration(
+                decoration: const InputDecoration(
                   focusedBorder: InputBorder.none,
                   filled: true,
-                  border:  OutlineInputBorder(borderSide: BorderSide.none),
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
               ),
             ),
@@ -115,7 +115,7 @@ class MobileAuth extends StatelessWidget {
         ),
         Container(
           width: maxWidth / 1.4,
-          margin:const EdgeInsets.only(left: 20, right: 20),
+          margin: const EdgeInsets.only(left: 20, right: 20),
           child: ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {

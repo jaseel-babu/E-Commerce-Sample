@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mechinetestforinfonix/view/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends GetxController {
   GoogleSignInAccount? googleaccount;
-  bool? googlesignedornot ;
+  bool? googlesignedornot;
   bool? userIsAlreadyLogin;
   String verificationId = "";
   @override
@@ -16,10 +20,10 @@ class Controller extends GetxController {
     super.onInit();
   }
 
-  var _googleSignin = GoogleSignIn();
+  final _googleSignin = GoogleSignIn();
   loginWithGmail() async {
     try {
-      this.googleaccount = await _googleSignin.signIn();
+      googleaccount = await _googleSignin.signIn();
       final googleAuth = await googleaccount!.authentication;
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
@@ -27,11 +31,15 @@ class Controller extends GetxController {
       );
       print(googleaccount!.displayName);
       await FirebaseAuth.instance.signInWithCredential(credential);
-    
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-     prefs.setBool("login",true);
-     userIsAlreadyLogin = prefs.getBool("login");
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool("login", true);
+      userIsAlreadyLogin = prefs.getBool("login");
+      Get.off(() => HomePage());
+    } on SocketException {
+      Fluttertoast.showToast(msg: "No internet connection");
+    } on PlatformException {
+      Fluttertoast.showToast(msg: "Invalid Format");
     } catch (e) {
       print(e);
     }

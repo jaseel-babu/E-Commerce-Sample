@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechinetestforinfonix/controller/countercontroller.dart';
+import 'package:mechinetestforinfonix/controller/cartcontroller.dart';
 
 typedef void CountButtonClickCallBack(int );
 
 class CountButtonView extends StatelessWidget {
-  final controller = Get.put(CounterController());
+  
   Function increment;
   Function decrement;
   final int initialCount;
@@ -35,7 +35,7 @@ class CountButtonView extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   decrement();
-                  controller.update(["update"]);
+                  
                 },
                 child: const SizedBox(
                   width: 40.0,
@@ -64,7 +64,7 @@ class CountButtonView extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   increment();
-                  controller.update(["update"]);
+                 
                 },
                 child: const SizedBox(
                   width: 40.0,

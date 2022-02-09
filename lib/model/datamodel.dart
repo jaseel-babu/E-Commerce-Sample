@@ -2,7 +2,7 @@
 //
 //     final dataModel = dataModelFromJson(jsonString);
 
-import 'dart:convert';
+// import 'dart:convert';
 
 //List<DataModel> dataModelFromJson(String str) => List<DataModel>.from(json.decode(str).map((x) => DataModel.fromJson(x)));
 
@@ -122,7 +122,8 @@ class AddonCat {
 }
 
 class CategoryDish {
-  CategoryDish({this.cartcount,
+  CategoryDish({
+    this.cartcount,
     this.dishId,
     this.dishName,
     this.dishPrice,
@@ -134,9 +135,9 @@ class CategoryDish {
     this.dishType,
     this.nexturl,
     this.addonCat,
-    
   });
-  int? cartcount=0;
+  
+  int? cartcount = 0;
   String? dishId;
   String? dishName;
   double? dishPrice;
@@ -159,7 +160,8 @@ class CategoryDish {
         dishCalories: json["dish_calories"],
         dishDescription: json["dish_description"],
         dishAvailability: json["dish_Availability"],
-        dishType: json["dish_Type"],cartcount: 0,
+        dishType: json["dish_Type"],
+        cartcount: 0,
         nexturl: json["nexturl"] == null ? null : json["nexturl"],
         addonCat: json["addonCat"] == null
             ? null
@@ -167,7 +169,8 @@ class CategoryDish {
                 json["addonCat"].map((x) => AddonCat.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {"0":cartcount,
+  Map<String, dynamic> toJson() => {
+        "0": cartcount,
         "dish_id": dishId,
         "dish_name": dishName,
         "dish_price": dishPrice,

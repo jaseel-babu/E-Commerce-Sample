@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/io_client.dart';
 import 'package:mechinetestforinfonix/model/datamodel.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  Future<DataModel>? getDataFromServer() async {
-    DataModel? empty;
+  Future<DataModel?> getDataFromServer() async {
     try {
       final client = HttpClient();
       client.badCertificateCallback =
@@ -23,9 +24,13 @@ class ApiService {
 
         return map;
       }
+    } on SocketException {
+      Fluttertoast.showToast(msg: "No internet connection");
+    } on PlatformException {
+      Fluttertoast.showToast(msg: "Invalid Format");
     } catch (e) {
       print(e);
     }
-    return empty!;
+    return null;
   }
 }
