@@ -68,6 +68,9 @@ class Items extends StatelessWidget {
                         int count = dataModel.tableMenuList![currentIndex]
                             .categoryDishes![index].cartcount = counter! + 1;
                         final map = {
+                          "priceforTotal": count *
+                              dataModel.tableMenuList![currentIndex]
+                                  .categoryDishes![index].dishPrice!,
                           "count": count,
                           "dishname": dataModel.tableMenuList![currentIndex]
                               .categoryDishes![index].dishName!,
@@ -75,10 +78,26 @@ class Items extends StatelessWidget {
                               .categoryDishes![index].dishPrice!,
                           "index": index,
                         };
-                        controller.MyItems.add(map);
-                          controller.total = controller.total! +
-                                         dataModel.tableMenuList![currentIndex]
-                              .categoryDishes![index].dishPrice!;
+                        if (controller.MyItems.where((element) {
+                          return element['dishname'] ==
+                              dataModel.tableMenuList![currentIndex]
+                                  .categoryDishes![index].dishName;
+                        }).isEmpty) {
+                          controller.MyItems.add(map);
+                        } else {
+                          controller.MyItems.removeWhere(
+                            (element) =>
+                                element['dishname'].toString() ==
+                                dataModel.tableMenuList![currentIndex]
+                                    .categoryDishes![index].dishName
+                                    .toString(),
+                          );
+                          controller.MyItems.add(map);
+                        }
+
+                        controller.total = controller.total! +
+                            dataModel.tableMenuList![currentIndex]
+                                .categoryDishes![index].dishPrice!;
                         controller.update(["update"]);
 
                         controller.update(["valuechanged"]);
@@ -90,9 +109,51 @@ class Items extends StatelessWidget {
                         int? counter = dataModel.tableMenuList![currentIndex]
                             .categoryDishes![index].cartcount;
                         if (counter! > 0) {
-                          dataModel.tableMenuList![currentIndex]
-                              .categoryDishes![index].cartcount = counter - 1;
-                          controller.update(["update"]);
+                        
+                          if (dataModel.tableMenuList![currentIndex]
+                                  .categoryDishes![index].cartcount ==
+                              0) {
+                            controller.MyItems.removeWhere((element) =>
+                                element['dishname'].toString() ==
+                                dataModel.tableMenuList![currentIndex]
+                                    .categoryDishes![index].dishName
+                                    .toString());
+                          } else {
+                            int? counter = dataModel
+                                .tableMenuList![currentIndex]
+                                .categoryDishes![index]
+                                .cartcount;
+                            int count = dataModel
+                                .tableMenuList![currentIndex]
+                                .categoryDishes![index]
+                                .cartcount = counter! - 1;
+                            final map = {
+                              "priceforTotal": count *
+                                  dataModel.tableMenuList![currentIndex]
+                                      .categoryDishes![index].dishPrice!,
+                              "count": count,
+                              "dishname": dataModel.tableMenuList![currentIndex]
+                                  .categoryDishes![index].dishName!,
+                              "dishprice": dataModel
+                                  .tableMenuList![currentIndex]
+                                  .categoryDishes![index]
+                                  .dishPrice!,
+                              "index": index,
+                            };
+                            controller.MyItems.removeWhere(
+                              (element) =>
+                                  element['dishname'].toString() ==
+                                  dataModel.tableMenuList![currentIndex]
+                                      .categoryDishes![index].dishName
+                                      .toString(),
+                            );
+                            controller.MyItems.add(map);
+                            controller.total = controller.total! -
+                                dataModel.tableMenuList![currentIndex]
+                                    .categoryDishes![index].dishPrice!;
+                            controller.update(["update"]);
+                            controller.update(["valuechanged"]);
+                          }
                         }
                       },
                       initialCount: 0,
@@ -100,15 +161,6 @@ class Items extends StatelessWidget {
                   })
             ],
           ),
-          // trailing: Container(
-          //   width: 100,
-          //   height: 100,
-          //   child: Image.network(
-          //     dataModel.tableMenuList![currentIndex].categoryDishes![index]
-          //         .dishImage!,
-          //     errorBuilder: (context, error, stackTrace) => const FlutterLogo(),
-          //   ),
-          // ),
         );
       },
     );

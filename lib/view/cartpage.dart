@@ -34,9 +34,13 @@ class CartPage extends StatelessWidget {
               GetBuilder<CartControll>(
                 builder: (controller) {
                   return ListView.builder(
+                    physics: ScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: controller.MyItems.length,
                     itemBuilder: (context, index) {
+                      controller.totalforOneItem = controller.MyItems[index]
+                              ["count"] *
+                          controller.MyItems[index]["dishprice"];
                       return Card(
                         child: Wrap(
                           alignment: WrapAlignment.spaceAround,
@@ -46,7 +50,8 @@ class CartPage extends StatelessWidget {
                                 SizedBox(
                                   width: 100,
                                   child: Text(
-                                    controller.MyItems[index]["dishname"].toString(),
+                                    controller.MyItems[index]["dishname"]
+                                        .toString(),
                                   ),
                                 ),
                                 Text(controller.MyItems[index]["dishprice"]
@@ -58,23 +63,25 @@ class CartPage extends StatelessWidget {
                               builder: (controller) {
                                 return CountButtonView(
                                   increment: () {
-                                    int? counter =
-                                        controller.MyItems[index]["count"] as int;
-                                    int count = controller.MyItems[index]
-                                        ["count"] = counter + 1;
-
-                                    controller.MyItems[index]["dishprice"] =
-                                        count *
-                                            controller.MyItems[index]
-                                                ["dishprice"] ;
-                                    for (int i = 0;
-                                        i < controller.MyItems.length;
-                                        i++) {
+                                    int? counter = controller.MyItems[index]
+                                        ["count"] as int;
+                                    controller.MyItems[index]["count"] =
+                                        counter + 1;
+                                    controller.count =
+                                        controller.MyItems[index]["count"];
+                                    controller.totalforOneItem = controller
+                                            .count! *
+                                        controller.MyItems[index]["dishprice"];
+                                    controller.MyItems[index]["priceforTotal"] =
+                                        controller.totalforOneItem;
+             
                                       controller.total = controller.total! +
                                           controller.MyItems[index]
                                               ["dishprice"];
-                                    }
-                                    controller.update(["update"]);
+                                    
+                                    controller.update(
+                                      ["update"],
+                                    );
 
                                     controller.update(["valuechanged"]);
                                   },
@@ -85,9 +92,22 @@ class CartPage extends StatelessWidget {
                                     int? counter =
                                         controller.MyItems[index]["count"];
                                     if (counter! > 0) {
-                                      controller.MyItems[index]["count"] =
-                                          counter - 1;
+                                      int count = controller.MyItems[index]
+                                          ["count"] = counter - 1;
+                                      controller.count =
+                                        controller.MyItems[index]["count"];
+                                    controller.totalforOneItem = controller
+                                            .count! *
+                                        controller.MyItems[index]["dishprice"];
+                                    controller.MyItems[index]["priceforTotal"] =
+                                        controller.totalforOneItem;
+             
+                                      controller.total = controller.total! -
+                                          controller.MyItems[index]
+                                              ["dishprice"];
+
                                       controller.update(["update"]);
+                                       controller.update(["valuechanged"]);
                                     }
                                   },
                                   initialCount: 0,
@@ -97,9 +117,8 @@ class CartPage extends StatelessWidget {
                             GetBuilder<CartControll>(
                               id: "update",
                               builder: (controller) {
-                                return Text(controller.MyItems[index]
-                                        ["dishprice"]
-                                    .toString());
+                                return Text(
+                                    controller.MyItems[index]["priceforTotal"] .toString());
                               },
                             ),
                           ],
@@ -117,7 +136,7 @@ class CartPage extends StatelessWidget {
                     title: Center(
                       child: Text(
                         "Total Price${controller.total!}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),

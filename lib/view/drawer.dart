@@ -36,7 +36,7 @@ class Menu extends StatelessWidget {
                       return Column(
                         children: [
                           CircleAvatar(
-                            child: Icon(Icons.person),
+                            child:const Icon(Icons.person),
                             backgroundImage: user.photoURL == null
                                 ? null
                                 : NetworkImage(user.photoURL!),
